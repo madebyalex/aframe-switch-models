@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <a-scene>
+      <a-assets>
+        <img
+          id="boxTexture"
+          src="https://images.pexels.com/photos/562211/pexels-photo-562211.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        />
+
+        <img
+          id="sphereTexture"
+          src="https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+          alt=""
+        />
+      </a-assets>
+
+      <a-box
+        width=".2"
+        height=".2"
+        depth=".2"
+        rotate="0 45 45"
+        position="0 2 -1"
+        src="#boxTexture"
+      >
+        <a-sphere position="1 0 -1" radius=".5" src="#sphereTexture"></a-sphere>
+      </a-box>
+
+      <a-entity
+        id="environment"
+        environment="preset: osiris; dressingAmount: 500"
+      ></a-entity>
+    </a-scene>
+
+    <footer id="footer">
+      <h1 id="envName"></h1>
+      <button id="switchEnv">Another theme</button>
+    </footer>
+
+    <script>
+      let arrPresets = [
+        'default',
+        'contact',
+        'egypt',
+        'checkerboard',
+        'forest',
+        'goaland',
+        'yavapai',
+        'goldmine',
+        'threetowers',
+        'poison',
+        'arches',
+        'tron',
+        'japan',
+        'dream',
+        'volcano',
+        'starry',
+        'osiris',
+      ];
+
+      function getRandomEnv() {
+        let randomPreset =
+          arrPresets[Math.floor(Math.random() * arrPresets.length)];
+        console.log(randomPreset);
+
+        document.querySelector(
+          '#envName'
+        ).textContent = randomPreset.replace(/^\w/, (c) => c.toUpperCase());
+
+        let environment = document.querySelector('#environment');
+        let presetAttr = 'preset: ' + randomPreset + '; dressingAmount: 500';
+        environment.setAttribute('environment', presetAttr);
+      }
+
+      getRandomEnv();
+
+      let btn = document.querySelector('#switchEnv');
+
+      btn.addEventListener('click', () => {
+        getRandomEnv();
+      });
+    </script>
+  </body>
+</html>

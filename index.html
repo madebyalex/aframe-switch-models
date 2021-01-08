@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <title>A-Frame – Switch 3D models</title>
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="cube" src="assets/cube.glb"></a-asset-item>
+        <a-asset-item id="pyramid" src="assets/pyramid.glb"></a-asset-item>
+        <a-asset-item id="platonic" src="assets/platonic.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity
+        id="model"
+        position="0 1.8 -1"
+        scale="0.001 0.001 0.001"
+        animation-mixer="loop: repeat"
+        gltf-model="#cube"
+        animation__rotate="property: object3D.rotation.y; to: 360; dur: 12000; loop: true; easing: linear"
+      ></a-entity>
+
+      <a-entity
+        id="environment"
+        environment="preset: osiris; dressingAmount: 500"
+      ></a-entity>
+    </a-scene>
+
+    <footer id="footer">
+      <h1 id="envName"></h1>
+      <button id="switchEnv">Another theme</button>
+
+      <select name="switch-model" id="switch-model">
+        <option selected value="cube">Cube</option>
+        <option value="pyramid">Pyramid</option>
+        <option value="platonic">Platonic</option>
+      </select>
+    </footer>
+
+    <script>
+      let arrPresets = [
+        'default',
+        'contact',
+        'egypt',
+        'checkerboard',
+        'forest',
+        'goaland',
+        'yavapai',
+        'goldmine',
+        'threetowers',
+        'poison',
+        'arches',
+        'tron',
+        'japan',
+        'dream',
+        'volcano',
+        'starry',
+        'osiris',
+      ];
+
+      function getRandomEnv() {
+        let randomPreset =
+          arrPresets[Math.floor(Math.random() * arrPresets.length)];
+        console.log(randomPreset);
+
+        document.querySelector(
+          '#envName'
+        ).textContent = randomPreset.replace(/^\w/, (c) => c.toUpperCase());
+
+        let environment = document.querySelector('#environment');
+        let presetAttr = 'preset: ' + randomPreset + '; dressingAmount: 500';
+        environment.setAttribute('environment', presetAttr);
+      }
+
+      getRandomEnv();
+
+      let btn = document.querySelector('#switchEnv');
+
+      btn.addEventListener('click', () => {
+        getRandomEnv();
+      });
+
+      // Switch 3D model
+      const selectbox = document.querySelector('#switch-model');
+      const model = document.querySelector('#model');
+
+      window.onload = function () {
+        selectbox.addEventListener('change', function () {
+          console.log('You selected: ', this.value);
+
+          newValue = '#' + this.value;
+          model.setAttribute('gltf-model', newValue);
+        });
+      };
+    </script>
+  </body>
+</html>
